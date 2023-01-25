@@ -1,19 +1,27 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
+	"github.com/gin-gonic/contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	r := gin.Default()
 
-	// handle `/` route
-	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		fmt.Fprint(res, "Hello World!")
+	/*authorized := r.Group("/api", gin.BasicAuth(gin.Accounts{
+		"user1": "testdigibee",
+		"user2": "testaz",
+	}))*/
+
+	authorized := r.Group("/api")
+	authorized.GET("/ping", ping)
+
+	r.Use(static.Serve("/", static.LocalFile("./views", true)))
+	r.Run()
+}
+
+func ping(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "pong",
 	})
-
-	// run server on port "9000"
-	log.Fatal(http.ListenAndServe(":8080", nil))
-
 }
