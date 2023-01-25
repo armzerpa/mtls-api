@@ -1,25 +1,23 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	// "fmt"
+	// "io"
+	"log"
+	"net/http"
 )
 
-var sslkey string = "./certs/server.key"
-var sslcert string = "./certs/server.crt"
-
-func main() {
-	r := gin.Default()
-
-	authorized := r.Group("/api")
-	authorized.GET("/ping", ping)
-
-	//r.Use(static.Serve("/", static.LocalFile("./views", true)))
-	r.RunTLS(":8080", sslcert, sslkey)
-	//r.Run()
+func HelloServer(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte("This is an example server.\n"))
+	// fmt.Fprintf(w, "This is an example server.\n")
+	// io.WriteString(w, "This is an example server.\n")
 }
 
-func ping(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "pong",
-	})
+func main() {
+	http.HandleFunc("/hello", HelloServer)
+	err := http.ListenAndServeTLS(":8080", "./certs/server.crt", "./certs/server.key", nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 }
