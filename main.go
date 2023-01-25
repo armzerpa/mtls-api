@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +15,7 @@ func main() {
 	authorized := r.Group("/api")
 	authorized.GET("/ping", ping)
 
-	r.Use(static.Serve("/", static.LocalFile("./views", true)))
+	//r.Use(static.Serve("/", static.LocalFile("./views", true)))
 	r.Run()
 }
 
