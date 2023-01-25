@@ -14,8 +14,8 @@ func main() {
 	authorized.GET("/ping", ping)
 
 	//r.Use(static.Serve("/", static.LocalFile("./views", true)))
-	//r.RunTLS(":8080", sslcert, sslkey)
-	r.Run()
+	r.RunTLS(":8080", sslcert, sslkey)
+	//r.Run()
 }
 
 func ping(c *gin.Context) {
